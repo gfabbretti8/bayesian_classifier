@@ -1,0 +1,80 @@
+﻿Name,End X,End Y,Length,Start X,Start Y,POSITION,Position X,Position Y
+Line,0.7842,6.2870,3.7513,4.1943,7.8501,,,
+Line,4.1943,7.8501,1.3186,3.9878,9.1525,,,
+Line,1.7219,7.8501,1.8228,0.7842,6.2870,,,
+Line,4.1943,6.2516,1.8515,5.8910,6.9926,,,
+Line,5.8910,6.9926,1.9011,4.1943,7.8501,,,
+Line,10.9085,11.4279,3.5553,7.3533,11.4279,,,
+Line,2.3244,1.9572,1.8699,4.1943,1.9572,,,
+Line,1.7219,11.1261,1.2912,0.4308,11.1268,,,
+Line,3.9878,9.1525,2.6135,1.7219,7.8501,,,
+Line,2.9368,11.2301,1.2193,1.7219,11.1261,,,
+Line,12.4224,4.6135,2.2229,10.2016,4.7118,,,
+Line,10.1833,3.7874,0.9246,10.2016,4.7118,,,
+Line,12.6372,6.3309,1.4415,11.1960,6.3633,,,
+Line,12.6286,9.1189,3.1058,11.1960,6.3633,,,
+Line,9.7436,8.3617,2.4704,11.1960,6.3633,,,
+Line,2.2919,3.4232,1.4664,2.3244,1.9572,,,
+Line,2.3244,1.9572,1.7122,0.6126,1.9173,,,
+Line,5.5644,1.8055,1.3785,4.1943,1.9572,,,
+Line,11.7594,1.6584,2.2246,9.6205,2.2700,,,
+Line,9.3912,0.4451,1.8393,9.6205,2.2700,,,
+Line,7.3533,0.5381,1.7319,7.3533,2.2700,,,
+Line,8.4215,2.2700,1.0683,7.3533,2.2700,,,
+Line,9.6205,2.2700,1.1990,8.4215,2.2700,,,
+Line,7.3533,6.3633,1.6515,7.3533,4.7118,,,
+Line,7.3533,6.3633,1.0771,8.4303,6.3633,,,
+Line,6.3095,4.7118,2.1152,4.1943,4.7118,,,
+Line,4.1943,4.7118,0.8309,4.1943,3.8809,,,
+Line,7.3533,4.7118,1.0438,6.3095,4.7118,,,
+Line,7.3533,2.2700,2.4418,7.3533,4.7118,,,
+Line,8.4320,4.7118,1.0787,7.3533,4.7118,,,
+Line,1.7219,7.8501,2.4724,4.1943,7.8501,,,
+Line,4.1943,7.8501,1.5986,4.1943,6.2516,,,
+Line,1.7219,9.8976,2.0474,1.7219,7.8501,,,
+Line,4.1943,1.9572,1.9237,4.1943,3.8809,,,
+Line,1.7219,11.1261,1.2285,1.7219,9.8976,,,
+Line,7.3533,11.4279,1.5398,7.3533,9.8881,,,
+Line,7.3533,9.8881,3.5248,7.3533,6.3633,,,
+Line,10.2016,4.7118,1.7696,8.4320,4.7118,,,
+Line,4.1943,6.2516,1.5398,4.1943,4.7118,,,
+Line,11.1960,6.3633,2.7657,8.4303,6.3633,,,
+object landmark,,,,,,livingroom-table,0.7842,6.2870
+object landmark,,,,,,kitchen-table,5.5644,1.8055
+object landmark,,,,,,kitchen-cabinet,2.2919,3.4232
+object landmark,,,,,,livingroom-couch,3.9878,9.1525
+object landmark,,,,,,storage-desk,2.9368,11.2301
+object landmark,,,,,,storage-cabinet,0.4308,11.1268
+object landmark,,,,,,livingroom-cabinet,5.8910,6.9926
+object landmark,,,,,,kitchen-fridge,0.6126,1.9173
+object landmark,,,,,,bedroom-desk,12.6372,6.3309
+object landmark,,,,,,bedroom-cabinet,12.6286,9.1189
+object landmark,,,,,,bedroom-bed,9.7436,8.3617
+object landmark,,,,,,bathroom-cabinet,10.1833,3.7874
+object landmark,,,,,,smallbedroom-bed,11.7594,1.6584
+object landmark,,,,,,smallbedroom-cabinet,9.3912,0.4451
+object landmark,,,,,,bathroom-washingmachine,12.4224,4.6135
+pose landmark,,,,,,bedroom,11.1960,6.3633
+pose landmark,,,,,,livingroom-2,4.1943,6.2516
+pose landmark,,,,,,livingroom-3,4.1943,7.8501
+pose landmark,,,,,,corridor-5,7.3533,9.8881
+pose landmark,,,,,,outside-1,7.3533,11.4279
+pose landmark,,,,,,bathroom,10.2016,4.7118
+pose landmark,,,,,,kitchen-1,4.1943,1.9572
+pose landmark,,,,,,kitchen-2,2.3244,1.9572
+pose landmark,,,,,,outside-2,10.9085,11.4279
+pose landmark,,,,,,door-livingroom-storage,1.7219,9.8976
+pose landmark,,,,,,livingroom-4,1.7219,7.8501
+pose landmark,,,,,,storage,1.7219,11.1261
+pose landmark,,,,,,livingroom-1,4.1943,4.7118
+pose landmark,,,,,,door-corridor-bathroom,8.4320,4.7118
+pose landmark,,,,,,corridor-3,7.3533,4.7118
+pose landmark,,,,,,door-kitchen-livingroom,4.1943,3.8809
+pose landmark,,,,,,,6.3095,4.7118
+pose landmark,,,,,,door-livingroom-corridor,6.3095,4.7118
+pose landmark,,,,,,smallbedroom,9.6205,2.2700
+pose landmark,,,,,,door-corridor-bedroom,8.4303,6.3633
+pose landmark,,,,,,corridor-4,7.3533,6.3633
+pose landmark,,,,,,door-corridor-smallbedroom,8.4215,2.2700
+pose landmark,,,,,,corridor-2,7.3533,2.2700
+pose landmark,,,,,,corridor-1,7.3533,0.5381

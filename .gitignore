@@ -1,0 +1,4 @@
+.DS_Store
+credentials_speech_to_text_google.json
+model.vec
+env/*
