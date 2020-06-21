@@ -5,7 +5,7 @@ import pymc3 as pm
 import networkx as nx
 import json
 import speech_recognition as sr
-
+import gensim
 
 # Helper functions
 from utils import display_probs, build_graph, add_row_to_dataframe
@@ -62,18 +62,18 @@ def get_object_places(table_path, graph_path):
         with sr.Microphone() as source:
 
             print("Quale oggetto stai cercando?\n")
-            #audio = r.listen(source)
+            audio = r.listen(source)
 
             # recognize speech using Google Cloud Speech
             try:
-                #object_to_search = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS).strip()
-                object_to_search = "milk"
+                object_to_search = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS).strip()
+
                 similar = check_similar_objects(df, object_to_search)
                 print(similar)
                 if(len(df.loc[df["object"] == object_to_search]) > 0 ):
                     break
                 elif(similar != None):
-                    answer = input(object_to_search + " non trovato, trovata compatibilita' con " + similar +", utilizzare la sua distribuzione?[Y/n]\n")
+                    answer = input(object_to_search + " non trovato, trovata compatibilita' con " + similar + ", utilizzare la sua distribuzione?[Y/n]\n")
                     if(answer == "Y"):
                         object_to_search = similar
                         break
