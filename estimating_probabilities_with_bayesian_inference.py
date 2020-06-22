@@ -1,3 +1,7 @@
+import datetime
+import itertools
+import dwave_networkx as dnx
+import dimod
 import pandas as pd
 import numpy as np
 import os
@@ -119,7 +123,48 @@ def get_object_places(table_path, graph_path):
 
     # For probabilities use samples after burn in
     pvals = trace_df.iloc[:, :number_of_places].mean(axis = 0)
-    display_probs(dict(zip(places, pvals)))
+    tag_and_dist = sorted(zip(places, pvals), key = lambda x: x[1], reverse=True)
+    display_probs(dict(tag_and_dist))
+
+    top_4_places = [x[0] for x in tag_and_dist[:3]]
+
+
+    g = build_graph(graph_path)
+
+    top_4_nodes = []
+
+    for label in top_4_places:
+        for node in g.nodes():
+            _,_,_,node_label = node
+            if(node_label == label):
+                top_4_nodes += [node]
+                break
+
+
+    #adding the actual position to the top4 nodes
+
+
+    top_4_nodes += [("pose",1.7219,11.1261,"storage")]
+    subgraph = nx.Graph()
+
+
+    edges = list(itertools.combinations(g.subgraph(top_4_nodes),2))
+
+    all_distances = dict(nx.all_pairs_shortest_path_length(g))
+
+    edges_with_weight = [ (x[0][3], x[1][3],all_distances[x[0]][x[1]]) for x in edges]
+
+    print(edges_with_weight)
+
+    for node1, node2, distance in edges_with_weight:
+        subgraph.add_edge(node1,node2,weight=distance)
+
+
+    print(datetime.datetime.now())
+    places = dnx.traveling_salesperson(subgraph, dimod.ExactSolver(), start=("storage"))
+    print(places)
+    print(datetime.datetime.now())
+
 
 get_object_places("table.csv", "graph.csv")
 #add_row_to_dataframe("table.csv")
