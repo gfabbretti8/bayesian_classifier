@@ -1,7 +1,8 @@
-import datetime
+import six
+import sys
+sys.modules['sklearn.externals.six'] = six
+import mlrose
 import itertools
-import dwave_networkx as dnx
-import dimod
 import pandas as pd
 import numpy as np
 import os
@@ -32,6 +33,9 @@ def get_distances(path, source):
 
     return distances_filtered
 
+def rotate(l, n):
+    return l[n:] + l[:n]
+
 def check_similar_objects(df, object_to_search):
 
     max = 0
@@ -53,7 +57,7 @@ def check_similar_objects(df, object_to_search):
     return object_most_similar
 
 
-def get_object_places(table_path, graph_path):
+def get_object_places(table_path, graph_path, visited_places):
     assert os.path.exists(table_path)
     assert os.path.exists(graph_path)
 
@@ -66,14 +70,15 @@ def get_object_places(table_path, graph_path):
         with sr.Microphone() as source:
 
             print("Quale oggetto stai cercando?\n")
-            audio = r.listen(source)
+            #audio = r.listen(source)
 
             # recognize speech using Google Cloud Speech
             try:
-                object_to_search = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS).strip()
+                object_to_search = "wallet"
+                #object_to_search = r.recognize_google_cloud(audio, credentials_json=GOOGLE_CLOUD_SPEECH_CREDENTIALS).strip()
 
-                similar = check_similar_objects(df, object_to_search)
-                print(similar)
+                #similar = check_similapr_objects(df, object_to_search)
+                #print(similar)
                 if(len(df.loc[df["object"] == object_to_search]) > 0 ):
                     break
                 elif(similar != None):
@@ -87,22 +92,32 @@ def get_object_places(table_path, graph_path):
             except sr.RequestError as e:
                 print("Could not request results from Google Cloud Speech service; {0}".format(e))
 
-    row = df.loc[df["object"] == object_to_search].drop('object', 1)
+    df = df.loc[df["object"] == object_to_search].drop('object', 1)
+    places = list(df.keys())
+
+    #dropping places already visited
+
+    for visited_place in visited_places:
+        df = df.drop(visited_place, 1)
+        places.remove(visited_place)
+
+    row = df
+    print(row)
 
     for x in list(zip(row.keys() ,row.values[0])):
         print(str(x[0]) + " " + str(x[1]))
 
-    places = row.keys()
+
     knowledge = row.values[0]
+
     number_of_places = len(knowledge)
 
-    distances_dict = get_distances(graph_path, ("pose",7.3533,2.2700,"corridor-2"))
+    distances_dict = get_distances(graph_path, ("pose",1.7219,11.1261,"storage"))
     distances = [ distances_dict[key] for key in places]
     max_distance = max(distances)
 
-    print("Sommatoria = " + str(sum(distances)) + " numero osservazioni = " + str(sum(knowledge)) + "Rapporto S/o =" + str(sum(distances)/sum(knowledge)))
 
-    inverted_distances = list(map(lambda x: abs(x-max_distance+1)/3, distances))
+    inverted_distances = list(map(lambda x: abs(x-max_distance+1)/5, distances))
 
     prior_knowledge = np.array(inverted_distances)
 
@@ -126,49 +141,46 @@ def get_object_places(table_path, graph_path):
     tag_and_dist = sorted(zip(places, pvals), key = lambda x: x[1], reverse=True)
     display_probs(dict(tag_and_dist))
 
-    top_4_places = [x[0] for x in tag_and_dist[:3]]
-
+    top_4_places = [x[0] for x in tag_and_dist[:4]]
 
     g = build_graph(graph_path)
 
-    top_4_nodes = []
+    topn_nodes = []
 
     for label in top_4_places:
         for node in g.nodes():
             _,_,_,node_label = node
             if(node_label == label):
-                top_4_nodes += [node]
+                topn_nodes += [node]
                 break
 
 
     #adding the actual position to the top4 nodes
-
-
-    top_4_nodes += [("pose",1.7219,11.1261,"storage")]
+    topn_nodes += [("pose",7.3533,0.5381,"corridor-1")]
     subgraph = nx.Graph()
 
 
-    edges = list(itertools.combinations(g.subgraph(top_4_nodes),2))
+    edges = list(itertools.combinations(g.subgraph(topn_nodes),2))
 
     all_distances = dict(nx.all_pairs_shortest_path_length(g))
 
-    edges_with_weight = [ (x[0][3], x[1][3],all_distances[x[0]][x[1]]) for x in edges]
+    edges_with_weight = [ (topn_nodes.index(x[0]), topn_nodes.index(x[1]),all_distances[x[0]][x[1]]) for x in edges]
 
     print(edges_with_weight)
 
-    for node1, node2, distance in edges_with_weight:
-        subgraph.add_edge(node1,node2,weight=distance)
+    fitness_dists = mlrose.TravellingSales(distances = edges_with_weight)
+    problem_fit = mlrose.TSPOpt(length = len(topn_nodes), fitness_fn = fitness_dists,
+                                maximize=False)
+    best_state, best_fitness = mlrose.genetic_alg(problem_fit, random_state = 2)
 
+    path = [topn_nodes[x][3] for x in best_state]
 
-    print(datetime.datetime.now())
-    places = dnx.traveling_salesperson(subgraph, dimod.ExactSolver(), start=("storage"))
-    print(places)
-    print(datetime.datetime.now())
+    path = rotate(path, path.index('corridor-1'))
 
+    print(path)
 
-get_object_places("table.csv", "graph.csv")
+get_object_places("table.csv", "graph.csv", [])
 #add_row_to_dataframe("table.csv")
-
 
 
 
